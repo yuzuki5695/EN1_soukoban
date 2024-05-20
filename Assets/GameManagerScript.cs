@@ -33,7 +33,7 @@ public class GameManagerScript : MonoBehaviour
                     return new Vector2Int(x, y);
                 }
             }
-            return new Vector2(-1,-1);
+            return new Vector2Int(-1,-1);
         }   
     }
     // クラスの中、メソッドの外に書くことに注意
@@ -43,8 +43,13 @@ public class GameManagerScript : MonoBehaviour
         // 移動先が範囲外なら移動不可
         if (moveTo.y < 0 || moveTo.y >= map.GetLength(0)) { return false; }
         if (moveTo.x < 0 || moveTo.x >= map.GetLength(2)) { return false; }
-     
-    
+
+        if (field[moveTo.y,moveTo.x] != null && field[moveTo.y,moveTo.x].tag == "Box")
+        {
+            Vector2Int veloctity = moveTo - moveFrom;
+            bool success = MoveNumber(moveTo, moveTo + veloctity);
+            if (!success) { return false; }
+        }  
         // プレイヤー ・ 箱関わらずの移動処理       
         field[moveFrom.y, moveFrom.x].transform.position =
             new Vector3(moveTo.x, map.GetLength(0) - moveTo.y, 0);
@@ -74,13 +79,22 @@ public class GameManagerScript : MonoBehaviour
             {
                 if (map[y, x] == 1)
                 {
-                    field[y,x] = Instantiate(
+                    field[y, x] = Instantiate(
                         playerPrefad,
                         new Vector3(x, map.GetLength(0) - y, 0),
                         Quaternion.identity
                         );
+                    debugText += map[y, x].ToString() + ", ";
                 }
-                debugText += map[y, x].ToString() + ", ";
+                if (map[y, x] == 2)
+                {
+                    field[y, x] = Instantiate(
+                        boxPrefad,
+                        new Vector3(x, map.GetLength(0) - y, 0),
+                        Quaternion.identity
+                        );
+                    debugText += map[y, x].ToString() + ", ";
+                }
             }
             debugText += "\n"; //改行
         }
