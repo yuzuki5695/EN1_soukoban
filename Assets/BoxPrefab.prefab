@@ -96,3 +96,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b58ed98e8ac26674f9839085d1fc1f7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 7909251405632145597, guid: 01e3b979a43577a439de7e1a096fb5d7, type: 3}
+  boxPrefab: {fileID: 279474700536570711}

@@ -24,7 +24,7 @@ public class GameManagerScript : MonoBehaviour
         {
             for (int x = 0; x < field.GetLength(1); x++)
             {
-                if (field[y,x] == null) {  continue; }
+                if (field[y,x] == null) { continue; }
                 // nullならcontinueされる
                 // この行に来る場合は、nullでないことが確定.
                 // タグ確認
@@ -103,7 +103,7 @@ public class GameManagerScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightParen))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             // メソッド化した処理を使用
             Vector2Int PlayerIndex = GetPlayerIndex();
@@ -111,6 +111,15 @@ public class GameManagerScript : MonoBehaviour
             MoveNumber(
                 PlayerIndex,
                 PlayerIndex + new Vector2Int(1,0));            
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            // メソッド化した処理を使用
+            Vector2Int PlayerIndex = GetPlayerIndex();
+            // 移動処理を関数化
+            MoveNumber(
+                PlayerIndex,
+                PlayerIndex + new Vector2Int(1, 0));
         }
     }
 }
