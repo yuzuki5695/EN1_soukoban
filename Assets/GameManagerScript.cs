@@ -30,7 +30,7 @@ public class GameManagerScript : MonoBehaviour
         {
             if (map[i] == 1)
             {
-                return 1;
+                return i;
             } 
         }
         return -1;
@@ -61,7 +61,7 @@ public class GameManagerScript : MonoBehaviour
 
     void Start()
     {
-        map = new int[] {0,0,0,1,0,2,0,0,0};
+        map = new int[] {0,2,0,1,0,2,0,0,0};
         PrintArray();
 
     }
@@ -76,6 +76,16 @@ public class GameManagerScript : MonoBehaviour
             MoveNumber(1, PlayerIndex, PlayerIndex + 1);
             PrintArray();
             
-        }       
+        }
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            // メソッド化した処理を使用
+            int PlayerIndex = GetPlayerIndex();
+            // 移動処理を関数化
+            MoveNumber(1, PlayerIndex, PlayerIndex - 1);
+            PrintArray();
+
+        }
     }
 }
