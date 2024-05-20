@@ -100,7 +100,6 @@ public class GameManagerScript : MonoBehaviour
         }
         Debug.Log(debugText);
     }
-
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
