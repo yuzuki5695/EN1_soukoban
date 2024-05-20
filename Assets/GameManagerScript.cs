@@ -1,62 +1,54 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Security.Claims;
 using Unity.VisualScripting.FullSerializer;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class GameManagerScript : MonoBehaviour
 {
-   // 追加
-
+    // 追加
+    public GameObject playerPrefad;
     int[,] map;// 変更。二次元配列で宣言
-
-    //クラスの中、メソッドの外に書くことに注意
-    void PrintArray()
-    {
-        string debugText = "";
-        for (int i = 0; i < map.Length; i++)
-        {
-            debugText += map[i].ToString() + ", ";
-        }
-        Debug.Log(debugText);  
-    }
+    GameObject[,] field;// ゲーム管理用の配列
 
     // クラスの中、メソッドの外に書くことに注意
     // 返り値の型の注意
-    int GetPlayerIndex()
+    Vector2Int GetPlayerIndex()
     {
-        for (int i = 0; i < map.Length; i++)
+        for (int y = 0; y < field.GetLength(0); y++)
         {
-            if (map[i] == 1)
+            for (int x = 0; x < field.GetLength(1); x++)
             {
-                return 1;
-            } 
-        }
-        return -1;
+                if (field[y,x] == null) { return continue; }
+                // nullならcontinueされる
+                // この行に来る場合は、nullでないことが確定.
+                // タグ確認
+                if (field[y,x].tag == "Player")
+                {
+                    return new Vector2Int(x, y);
+                }
+            }
+            return new Vector2(-1,-1);
+        }   
     }
     // クラスの中、メソッドの外に書くことに注意
     // 返り値の型の注意
-    bool MoveNumber(int number,int moveFrom,int moveTo)
+    bool MoveNumber(Vector2Int moveFrom, Vector2Int moveTo)
     {
         // 移動先が範囲外なら移動不可
-        if (moveTo < 0 || moveTo >= map.Length) { return false; }
-        // 移動先に2(箱)がいたら
-        if (map[moveTo] == 2)
-        {
-            // どの方向へ移動するかを算出
-            int velocity = moveTo - moveFrom;
-            // プレイヤーの移動先から、さらに先に2(箱)を移動
-            // 移動処理のメソッドを呼び、処理を再起。
-            // 移動可不可をboolで記録
-            bool success = MoveNumber(2, moveTo, moveTo + velocity);
-            // 箱が移動失敗したら、プレイヤーの移動も失敗
-            if (!success) { return false; }
-        }
+        if (moveTo.y < 0 || moveTo.y >= map.GetLength(0)) { return false; }
+        if (moveTo.x < 0 || moveTo.x >= map.GetLength(2)) { return false; }
+     
+    
         // プレイヤー ・ 箱関わらずの移動処理       
-        map[moveTo] = number;
-        map[moveFrom] = 0;
+        field[moveFrom.y, moveFrom.x].transform.position =
+            new Vector3(moveTo.x, map.GetLength(0) - moveTo.y, 0);
+        field[moveTo.y, moveTo.x] = field[moveFrom.y, moveFrom.x];
+        field[moveFrom.y, moveFrom.x] = null;
         return true;
     }
 
@@ -67,12 +59,26 @@ public class GameManagerScript : MonoBehaviour
         { 0,0,1,0,0},
         { 0,0,0,0,0},
         };
+        field = new GameObject
+        [
+            map.GetLength(0),
+            map.GetLength(1)
+        ];
+
         string debugText = "";
         // 変更. 二重for分で二次元配列の情報を出力
         for (int y = 0; y < map.GetLength(0); y++)
         {
             for (int x = 0; x < map.GetLength(1); x++)
             {
+                if (map[y, x] == 1)
+                {
+                    field[y,x] = Instantiate(
+                        playerPrefad,
+                        new Vector3(x, map.GetLength(0) - y, 0),
+                        Quaternion.identity
+                        );
+                }
                 debugText += map[y, x].ToString() + ", ";
             }
             debugText += "\n"; //改行
@@ -85,11 +91,11 @@ public class GameManagerScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightParen))
         {
             // メソッド化した処理を使用
-            int PlayerIndex = GetPlayerIndex();
+            Vector2Int PlayerIndex = GetPlayerIndex();
             // 移動処理を関数化
-            MoveNumber(1, PlayerIndex, PlayerIndex + 1);
-            PrintArray();
-            
+            MoveNumber(
+                PlayerIndex,
+                PlayerIndex + new Vector2Int(1,0));            
         }
     }
 }
