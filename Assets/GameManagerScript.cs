@@ -32,7 +32,7 @@ public class GameManagerScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightParen))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             int PlayerIndex = -1;
             //—v‘f‚Ímap.Length‚ÅŽæ“¾
@@ -49,6 +49,34 @@ public class GameManagerScript : MonoBehaviour
             {
 
                 map[PlayerIndex + 1] = 1;
+                map[PlayerIndex] = 0;
+
+            }
+
+            string debugText = "";
+            for (int i = 0; i < map.Length; i++)
+            {
+                debugText += map[i].ToString() + ", ";
+            }
+            Debug.Log(debugText);
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            int PlayerIndex = -1;
+            //—v‘f‚Ímap.Length‚ÅŽæ“¾
+            for (int i = 0; i < map.Length; i++)
+            {
+                if (map[i] == 1)
+                {
+                    PlayerIndex = i;
+                    break;
+                }
+            }
+
+            if (PlayerIndex > 0 )
+            {
+
+                map[PlayerIndex - 1] = 1;
                 map[PlayerIndex] = 0;
 
             }
