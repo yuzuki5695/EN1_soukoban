@@ -1,11 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Claims;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameManagerScript : MonoBehaviour
 {
-    //配列の宣言
-    int[] map;
+   // 追加
+
+    int[,] map;// 変更。二次元配列で宣言
 
     //クラスの中、メソッドの外に書くことに注意
     void PrintArray()
@@ -57,9 +62,22 @@ public class GameManagerScript : MonoBehaviour
 
     void Start()
     {
-        map = new int[] {0,0,0,1,0,2,0,0,0};
-        PrintArray();
-
+        map = new int[,] {
+        { 0,0,0,0,0},
+        { 0,0,1,0,0},
+        { 0,0,0,0,0},
+        };
+        string debugText = "";
+        // 変更. 二重for分で二次元配列の情報を出力
+        for (int y = 0; y < map.GetLength(0); y++)
+        {
+            for (int x = 0; x < map.GetLength(1); x++)
+            {
+                debugText += map[y, x].ToString() + ", ";
+            }
+            debugText += "\n"; //改行
+        }
+        Debug.Log(debugText);
     }
 
     void Update()
