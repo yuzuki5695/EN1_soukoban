@@ -27,17 +27,24 @@ public class GameManagerScript : MonoBehaviour
         }
         Debug.Log(debugText);
     }
+
     //クラスの中 メソットの外に書く
     //返り値の型に注意
-    int GetplayerIndex()
+     Vector2Int GetPlayerIndex()
     {
-        for (int y = 0; y < field.Length; y++)
+        for (int y = 0; y < field.GetLength(0); y++)
         {
-            for (int x = 0; x < field.Length; x++)
+            for (int x = 0; x < field.GetLength(1); x++)
             {
+                if (map[i] == 1)
+                {
+                    return new Vector2Int(x, y);
+                }
 
-                if (field[y, x] == null) { continue }
-                if (field[y, x].tag == "Player") { return new Vector2Int(x, y); }
+
+
+             //   if (field[y, x] == null) { continue }
+               // if (field[y, x].tag == "Player") { return new Vector2Int(x, y); }
             }
 
         }
@@ -139,8 +146,7 @@ public class GameManagerScript : MonoBehaviour
                     field[y,x] = Instantiate(
                   PlayerPrefab, //コピーする既存オブジェクト
                   new Vector3(
-                  x- map.GetLength(1) / 2, 
-                  -y + map.GetLength(0) / 2, 0),//オブジェクトの位置
+                  x, map.GetLength(0) - y,0),//オブジェクトの位置
                   Quaternion.identity//オブジェクトの向き
                   );
                 }
