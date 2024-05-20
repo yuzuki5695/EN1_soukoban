@@ -68,7 +68,7 @@ public class GameManagerScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightParen))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             // メソッド化した処理を使用
             int PlayerIndex = GetPlayerIndex();
@@ -76,6 +76,6 @@ public class GameManagerScript : MonoBehaviour
             MoveNumber(1, PlayerIndex, PlayerIndex + 1);
             PrintArray();
             
-        }
+        }       
     }
 }
