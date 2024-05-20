@@ -13,38 +13,38 @@ public class GameManagerScript : MonoBehaviour
     int[,] map;
     GameObject[,] field;
     GameObject obj;
-    
 
 
 
-    //クラスの中 メソットの外に書く
-    void PrintArray()
-    {
-        string debugText = "";
-        for (int i = 0; i < map.Length; i++)
-        {
-      //      debugText += map[i].ToString() + ",";
-        }
-        Debug.Log(debugText);
-    }
+
+    ////クラスの中 メソットの外に書く
+    //void PrintArray()
+    //{
+    //    string debugText = "";
+    //    for (int i = 0; i < map.Length; i++)
+    //    {
+    //  //      debugText += map[i].ToString() + ",";
+    //    }
+    //    Debug.Log(debugText);
+    //}
 
     //クラスの中 メソットの外に書く
     //返り値の型に注意
-     Vector2Int GetPlayerIndex()
+    Vector2Int GetPlayerIndex()
     {
         for (int y = 0; y < field.GetLength(0); y++)
         {
             for (int x = 0; x < field.GetLength(1); x++)
             {
-                if (map[i] == 1)
-                {
-                    return new Vector2Int(x, y);
-                }
+               
+
+              if (field[y, x] == null) { return continue; }
 
 
-
-             //   if (field[y, x] == null) { continue }
-               // if (field[y, x].tag == "Player") { return new Vector2Int(x, y); }
+               if (field[y, x].tag == "Player") 
+               {
+                    return new Vector2Int(x, y); 
+               }
             }
 
         }
@@ -52,20 +52,12 @@ public class GameManagerScript : MonoBehaviour
     }
 
 
-    bool Movenumber(string tag,Vector2Int moveFrom,Vector2Int moveTo)
+    bool Movenumber(Vector2Int moveFrom,Vector2Int moveTo)
     {
         //縦横軸の配列外参照をしていないか
         if (moveTo.y < 0 || moveTo.y>= map.GetLength(0)) { return false; }
         if (moveTo.x < 0 || moveTo.x >= map.GetLength(1)) { return false; }
 
-
-        //Boxタグを思っていたら再起処理
-        if (field[moveTo.y, moveTo.x] != null && field[moveTo.y, moveTo.x].tag == "Box")
-        {
-            Vector2Int vector = moveTo - moveFrom;
-            bool succes = MoveNumder(tag, moveTo, moveTo + velocity);
-            if (!succes) { return false; }    
-        }
         //   if (map[moveTo] == 2)
         //   {
         //       int velocity = moveTo - moveFrom;
@@ -74,15 +66,27 @@ public class GameManagerScript : MonoBehaviour
         //      if (!success) { return false; }
         //  }
 
-        //    map[moveTo] = number;
-        //   map[moveFrom] = 0;
+        //Boxタグを思っていたら再起処理
+        if (field[moveTo.y, moveTo.x] != null && field[moveTo.y, moveTo.x].tag == "Box")
+        {
+            Vector2Int vector = moveTo - moveFrom;
+            bool succes = MoveNumder(tag, moveTo, moveTo + velocity);
+            if (!succes) { return false; }
+        }
+
+        field[moveTo.y, moveTo.x].transform.position =
+            new Vector3(x, map.GetLength(0) - y, 0);
+
+
+        field[moveTo.y,moveTo.x] = field[moveFrom.y, moveFrom.x];
+        field[moveFrom.y, moveFrom.x] = null;
         return true;
     }
 
 
     //クラスの中 メソットの外に書く
     //返り値の型に注意
-    bool MoveNumder(int numder,int moveFrom,int moveTo)
+    bool MoveNumber(int numder,int moveFrom,int moveTo)
     {
         if(moveTo < 0 || moveTo >= map.Length) {  return false; }
 
@@ -93,7 +97,7 @@ public class GameManagerScript : MonoBehaviour
             //どの方向へ移動か算出
             int velocity = moveTo - moveFrom;
             //移動処理の再起
-            bool success = MoveNumder(2,moveTo,moveTo + velocity);
+            bool success = MoveNumber(2,moveTo,moveTo + velocity);
             //箱が移動失敗したら、プレイヤーの移動も失敗
             if (!success) { return false; }
         }
@@ -161,21 +165,21 @@ public class GameManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      //  if (Input.GetKeyDown(KeyCode.RightArrow))
-      //  {
-      //      int PlayerIndex = GetplayerIndex();
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            Vector2Int PlayerIndex = GetPlayerIndex();
 
-        //    MoveNumder(1, PlayerIndex, PlayerIndex + 1);
-         //   PrintArray();
-      //  }
+            MoveNumber(PlayerIndex, PlayerIndex + new Vector2Int(1,0));
+           // PrintArray();
+        }
 
-     ///   if (Input.GetKeyDown(KeyCode.LeftArrow))
-     //   {
-     //       int PlayerIndex = GetplayerIndex();
+       if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            Vector2Int PlayerIndex = GetPlayerIndex();
 
-      //      MoveNumder(1, PlayerIndex, PlayerIndex - 1);
-      //      PrintArray();
-      //  }
+            MoveNumber(PlayerIndex, PlayerIndex + new Vector2Int(1, 0));
+           // PrintArray();
+        }
     }
 
 }
