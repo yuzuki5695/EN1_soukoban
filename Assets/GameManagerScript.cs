@@ -80,7 +80,7 @@ public class GameManagerScript : MonoBehaviour
                 if (map[y, x] == 1)
                 {
                     field[y, x] = Instantiate(
-                        playerPrefad,
+                        playerPrefab,
                         new Vector3(x, map.GetLength(0) - y, 0),
                         Quaternion.identity
                         );
@@ -89,7 +89,7 @@ public class GameManagerScript : MonoBehaviour
                 if (map[y, x] == 2)
                 {
                     field[y, x] = Instantiate(
-                        boxPrefad,
+                        boxPrefab,
                         new Vector3(x, map.GetLength(0) - y, 0),
                         Quaternion.identity
                         );
