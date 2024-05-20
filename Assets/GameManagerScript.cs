@@ -11,8 +11,8 @@ using UnityEngine.UIElements;
 public class GameManagerScript : MonoBehaviour
 {
     // 追加
-    public GameObject playerPrefad;
-    public GameObject boxPrefad;
+    public GameObject playerPrefab;
+    public GameObject boxPrefab;
     int[,] map;// 変更。二次元配列で宣言
     GameObject[,] field;// ゲーム管理用の配列
 
@@ -24,7 +24,7 @@ public class GameManagerScript : MonoBehaviour
         {
             for (int x = 0; x < field.GetLength(1); x++)
             {
-                if (field[y,x] == null) { return continue; }
+                if (field[y,x] == null) {  continue; }
                 // nullならcontinueされる
                 // この行に来る場合は、nullでないことが確定.
                 // タグ確認
@@ -32,9 +32,9 @@ public class GameManagerScript : MonoBehaviour
                 {
                     return new Vector2Int(x, y);
                 }
-            }
-            return new Vector2Int(-1,-1);
-        }   
+            }          
+        }
+        return new Vector2Int(-1, -1);
     }
     // クラスの中、メソッドの外に書くことに注意
     // 返り値の型の注意
