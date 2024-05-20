@@ -12,6 +12,7 @@ public class GameManagerScript : MonoBehaviour
 {
     // 追加
     public GameObject playerPrefad;
+    public GameObject boxPrefad;
     int[,] map;// 変更。二次元配列で宣言
     GameObject[,] field;// ゲーム管理用の配列
 
