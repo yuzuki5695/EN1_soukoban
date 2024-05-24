@@ -16,6 +16,53 @@ public class GameManagerScript : MonoBehaviour
     int[,] map;// 変更。二次元配列で宣言
     GameObject[,] field;// ゲーム管理用の配列
 
+
+    void Start()
+    {
+        map = new int[,] {
+        { 0,0,0,0,0,0},
+        { 0,0,1,0,0,0},
+        { 0,0,2,0,0,0},
+        { 0,2,0,2,0,0},
+        { 0,0,0,0,0,0},
+        };
+        field = new GameObject
+        [
+            map.GetLength(0),
+            map.GetLength(1)
+        ];
+
+        string debugText = "";
+        // 変更. 二重for分で二次元配列の情報を出力
+        for (int y = 0; y < map.GetLength(0); y++)
+        {
+            for (int x = 0; x < map.GetLength(1); x++)
+            {
+                if (map[y, x] == 1)
+                {
+                    field[y, x] = Instantiate(
+                        playerPrefab,
+                        new Vector3(x, map.GetLength(0) - y, 0),
+                        Quaternion.identity
+                        );
+                  //  debugText += map[y, x].ToString() + ", ";
+                }
+                if (map[y, x] == 2)
+                {
+                    field[y, x] = Instantiate(
+                        boxPrefab,
+                        new Vector3(x, map.GetLength(0) - y, 0),
+                        Quaternion.identity
+                        );
+                    //debugText += map[y, x].ToString() + ", ";
+                }
+            }
+            //debugText += "\n"; //改行
+        }
+        Debug.Log(debugText);
+    }
+
+
     // クラスの中、メソッドの外に書くことに注意
     // 返り値の型の注意
     Vector2Int GetPlayerIndex()
@@ -42,7 +89,7 @@ public class GameManagerScript : MonoBehaviour
     {
         // 移動先が範囲外なら移動不可
         if (moveTo.y < 0 || moveTo.y >= map.GetLength(0)) { return false; }
-        if (moveTo.x < 0 || moveTo.x >= map.GetLength(2)) { return false; }
+        if (moveTo.x < 0 || moveTo.x >= map.GetLength(1)) { return false; }
 
         if (field[moveTo.y,moveTo.x] != null && field[moveTo.y,moveTo.x].tag == "Box")
         {
@@ -58,48 +105,6 @@ public class GameManagerScript : MonoBehaviour
         return true;
     }
 
-    void Start()
-    {
-        map = new int[,] {
-        { 0,0,0,0,0},
-        { 0,0,1,0,0},
-        { 0,0,0,0,0},
-        };
-        field = new GameObject
-        [
-            map.GetLength(0),
-            map.GetLength(1)
-        ];
-
-        string debugText = "";
-        // 変更. 二重for分で二次元配列の情報を出力
-        for (int y = 0; y < map.GetLength(0); y++)
-        {
-            for (int x = 0; x < map.GetLength(1); x++)
-            {
-                if (map[y, x] == 1)
-                {
-                    field[y, x] = Instantiate(
-                        playerPrefab,
-                        new Vector3(x, map.GetLength(0) - y, 0),
-                        Quaternion.identity
-                        );
-                    debugText += map[y, x].ToString() + ", ";
-                }
-                if (map[y, x] == 2)
-                {
-                    field[y, x] = Instantiate(
-                        boxPrefab,
-                        new Vector3(x, map.GetLength(0) - y, 0),
-                        Quaternion.identity
-                        );
-                    debugText += map[y, x].ToString() + ", ";
-                }
-            }
-            debugText += "\n"; //改行
-        }
-        Debug.Log(debugText);
-    }
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -118,7 +123,25 @@ public class GameManagerScript : MonoBehaviour
             // 移動処理を関数化
             MoveNumber(
                 PlayerIndex,
-                PlayerIndex + new Vector2Int(1, 0));
+                PlayerIndex - new Vector2Int(1, 0));
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            // メソッド化した処理を使用
+            Vector2Int PlayerIndex = GetPlayerIndex();
+            // 移動処理を関数化
+            MoveNumber(
+                PlayerIndex,
+                PlayerIndex - new Vector2Int(0, 1));
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            // メソッド化した処理を使用
+            Vector2Int PlayerIndex = GetPlayerIndex();
+            // 移動処理を関数化
+            MoveNumber(
+                PlayerIndex,
+                PlayerIndex + new Vector2Int(0, 1));
         }
     }
 }
