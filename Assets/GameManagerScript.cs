@@ -13,6 +13,8 @@ public class GameManagerScript : MonoBehaviour
     // 追加
     public GameObject playerPrefab;
     public GameObject boxPrefab;
+    public GameObject goalPrefab;  
+    public GameObject clearText;
     int[,] map;// 変更。二次元配列で宣言
     GameObject[,] field;// ゲーム管理用の配列
 
@@ -176,7 +178,9 @@ public class GameManagerScript : MonoBehaviour
         // クリアしていたら
         if (IsCleard())
         {
-            Debug.Log("Clear");
+            // ゲームオブジェクトのSetActiveメソッドを使い有効化
+            clearText.SetActive(true);
+           // Debug.Log("Clear");
         }
     }
 }
