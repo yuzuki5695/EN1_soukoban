@@ -20,11 +20,11 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         map = new int[,] {
-        { 0,0,0,0,0,0},
-        { 0,0,1,0,0,0},
-        { 0,0,2,0,0,0},
-        { 0,2,0,2,0,0},
-        { 0,0,0,0,0,0},
+        { 0,0,0,0,0},
+        { 0,3,1,3,0},
+        { 0,0,2,0,0},
+        { 0,2,3,2,0},
+        { 0,0,0,0,0},
         };
         field = new GameObject
         [
@@ -45,7 +45,6 @@ public class GameManagerScript : MonoBehaviour
                         new Vector3(x, map.GetLength(0) - y, 0),
                         Quaternion.identity
                         );
-                  //  debugText += map[y, x].ToString() + ", ";
                 }
                 if (map[y, x] == 2)
                 {
@@ -54,13 +53,44 @@ public class GameManagerScript : MonoBehaviour
                         new Vector3(x, map.GetLength(0) - y, 0),
                         Quaternion.identity
                         );
-                    //debugText += map[y, x].ToString() + ", ";
                 }
             }
-            //debugText += "\n"; //改行
         }
         Debug.Log(debugText);
     }
+
+
+    bool IsCleard()
+    {
+        // vector2Int型の可変長配列の作成
+        List<Vector2Int> goals = new List<Vector2Int>();
+
+        for (int y = 0; y < field.GetLength(0); y++)
+        {
+            for (int x = 0; x < field.GetLength(1); x++)
+            {
+                // 格納場所か否かを判断
+                if(map[y, x] == 3)
+                {
+                    // 格納場所のインデックスを控えておく
+                    goals.Add(new Vector2Int(x, y));
+                }
+            }
+        }
+        // 要素はgoals.Countで取得
+        for (int i = 0; i < goals.Count; i++)
+        {
+            GameObject f = field[goals[i].y, goals[i].x];
+            if(f == null || f.tag != "Box")
+            {
+                // 1つでも無かったら条件未達成
+                return false;
+            }
+        }
+        // 条件未達成でなければ条件達成
+        return true;
+    }
+
 
 
     // クラスの中、メソッドの外に書くことに注意
@@ -142,6 +172,11 @@ public class GameManagerScript : MonoBehaviour
             MoveNumber(
                 PlayerIndex,
                 PlayerIndex + new Vector2Int(0, 1));
+        }
+        // クリアしていたら
+        if (IsCleard())
+        {
+            Debug.Log("Clear");
         }
     }
 }
