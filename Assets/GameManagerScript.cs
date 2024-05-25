@@ -128,10 +128,13 @@ public class GameManagerScript : MonoBehaviour
             Vector2Int veloctity = moveTo - moveFrom;
             bool success = MoveNumber(moveTo, moveTo + veloctity);
             if (!success) { return false; }
-        }  
+        }
         // プレイヤー ・ 箱関わらずの移動処理       
-        field[moveFrom.y, moveFrom.x].transform.position =
-            new Vector3(moveTo.x, map.GetLength(0) - moveTo.y, 0);
+        //field[moveFrom.y, moveFrom.x].transform.position =
+        //    new Vector3(moveTo.x, map.GetLength(0) - moveTo.y, 0);
+        Vector3 moveToPosition = new Vector3(
+            moveTo.x,map.GetLength(0) - moveTo.y,0);
+        field[moveFrom.y, moveFrom.x].GetComponent<Move>().MoveTo(moveToPosition);
         field[moveTo.y, moveTo.x] = field[moveFrom.y, moveFrom.x];
         field[moveFrom.y, moveFrom.x] = null;
         return true;
