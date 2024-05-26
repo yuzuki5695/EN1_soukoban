@@ -18,7 +18,7 @@ public class GameManagerScript : MonoBehaviour
     int[,] map;// 変更。二次元配列で宣言
     GameObject[,] field;// ゲーム管理用の配列
 
-
+    // Start is called before the first frame update
     void Start()
     {
         Screen.SetResolution(1280, 720, false);
@@ -60,6 +60,8 @@ public class GameManagerScript : MonoBehaviour
                 }
             }
         }
+  
+
         Debug.Log(debugText);
     }
 
@@ -142,6 +144,7 @@ public class GameManagerScript : MonoBehaviour
         return true;
     }
 
+    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -151,7 +154,10 @@ public class GameManagerScript : MonoBehaviour
             // 移動処理を関数化
             MoveNumber(
                 PlayerIndex,
-                PlayerIndex + new Vector2Int(1,0));            
+                PlayerIndex + new Vector2Int(1,0));   
+            
+            // パーティクルを生成
+            
         }
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
