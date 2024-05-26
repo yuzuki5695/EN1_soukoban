@@ -15,6 +15,7 @@ public class GameManagerScript : MonoBehaviour
     public GameObject boxPrefab;
     public GameObject goalPrefab;  
     public GameObject clearText;
+    public GameObject StoragePrefab;
     int[,] map;// 変更。二次元配列で宣言
     GameObject[,] field;// ゲーム管理用の配列
 
@@ -53,6 +54,14 @@ public class GameManagerScript : MonoBehaviour
                     field[y, x] = Instantiate(
                         boxPrefab,
                         new Vector3(x, map.GetLength(0) - y, 0),
+                        Quaternion.identity
+                        );
+                }
+                if (map[y, x] == 3)
+                {
+                    field[y, x] = Instantiate(
+                        StoragePrefab,
+                        new Vector3(x, map.GetLength(0) - y, 0.01f),
                         Quaternion.identity
                         );
                 }
