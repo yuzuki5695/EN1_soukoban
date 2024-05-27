@@ -646,6 +646,7 @@ MonoBehaviour:
   boxPrefab: {fileID: 8929094657205219122, guid: d89a491350646eb4bbbe11eb0e64f6fc, type: 3}
   goalPrefab: {fileID: 0}
   clearText: {fileID: 890871210}
+  StoragePrefab: {fileID: 7290105854539581349, guid: e708b0964591f64488c0d385b8235989, type: 3}
 --- !u!4 &1706092918
 Transform:
   m_ObjectHideFlags: 0

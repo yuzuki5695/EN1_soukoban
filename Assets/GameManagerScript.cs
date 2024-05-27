@@ -1,12 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using System.Security.Claims;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor.Tilemaps;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class GameManagerScript : MonoBehaviour
 {
